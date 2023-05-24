@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# data directores
+/Notebooks/Pset2/data/
+/Notebooks/Pset3/data/
+
 # C extensions
 *.so
 
