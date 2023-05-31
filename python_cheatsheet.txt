@@ -1,0 +1,85 @@
+Python Cheat sheet
+
+List Slicing:
+
+list[3:5], only prints 3 and 4.
+[start: end], [inclusive, exclusive]
+
+list[:5] start to 5
+list[5:] 5 to end
+
+Delete from list:
+del(list[index])
+
+Assigning new list, and not just reference
+x = [1, 2, 3]
+y = list(x)
+
+
+Methods
+this is the .stuff in a python object
+fam.index("stuff")
+
+Importing packages
+import numpy as np
+from numpy import array
+import matplotlib.pyplot as plt
+
+bmi > 23 will give a list of true and falses
+bmi[bmi > 23] give you stuff that's > 23
+
+Attributes
+array.shape # notice how there isn't any (), since it is an attribute.
+
+
+Plots
+import matplotlib.pyplot as plt
+plt.plot(year, pop)
+plt.xlabel('')
+plt.ylabel('')
+plt.title('')
+plt.grid(True)
+
+plt.show()
+
+plt.scatter(x = gdp_cap, y = life_exp, s = np.array(pop) * 2, c = col,
+alpha = 0.8)
+
+
+Dictionaires
+world = {"afghanistan":30.55, "albania":2.77}
+Key value pairs
+
+adding new stuff: dict['key'] = value
+del(world['key'])
+
+check if something is in there
+'value' in dict
+
+Pandas
+df = pd.read_csv('path',  index_col = 0 )
+pd.DataFrame(dict)
+cars.index = row_labels
+
+brics['country'] # this will return a series
+brics[['country']] # this will return a one column data frame
+
+loc # label based
+iloc # integer position-based
+
+brics.loc[['RU']] # get row based on label
+brics.iloc[[1]] # get row based on index
+
+brics.iloc[[:, [0,1]] # get all rows and columns 0 and 1
+
+filter for row then print column
+cars.loc[['RU, 'MOR'], ['Country', 'drives_right']]
+
+Numpy logical
+np.logical_and()
+np.logical_or()
+np.logical_not()
+
+
+if condition:
+     expression
