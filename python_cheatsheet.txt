@@ -75,6 +75,10 @@ brics.iloc[[:, [0,1]] # get all rows and columns 0 and 1
 filter for row then print column
 cars.loc[['RU, 'MOR'], ['Country', 'drives_right']]
 
+subsetting dataframe
+brics[brics['area'] > 8]
+brics[np.logical_and(brics['area'] > 8), brics['area' < 10]]
+
 Numpy logical
 np.logical_and()
 np.logical_or()
@@ -83,3 +87,64 @@ np.logical_not()
 
 if condition:
      expression
+elif x > y:
+     expression
+else:
+
+while condition:
+     expression
+
+for i in array:
+     print(i)
+
+for index, height in enumerate(fam):
+     index # this is an index that keeps count
+     height # this is the actual values of the array
+
+# printing for dictionary
+for key, value in dict.items():
+     key # key of dict
+     value # value of dict
+
+# printing over all elements of np array
+for val in np.nditer(array):
+	print val
+
+-------------------------------
+
+# now for pandas data frame
+# iterate over rows
+for lab, row in df.iterrows():
+     df.loc[lab, 'name_length'] = len(row['column'])
+
+df['name_length] = df['country'].apply(len)
+cars['COUNTRY'] = cars['country'].apply(str.upper)
+
+# summary stuff
+df.info() # columns names, type, number of missing values.
+df.shape # rows and columns
+df.desbribe() # summary statistics
+df.values # data values of in 2 dimensional numpy arrays
+df.columns # colum nnames
+df.index # rows
+
+# Sorting
+df.sort_values("column_name", ascending=True)
+df.sort_values(["column_name 1", "column_name 2"], ascending=[True, True])
+
+# Subsetting columns
+df["column_name"]
+df[['column 1', 'column 2']]
+
+# subsetting rows
+df[df['height'] > 50]
+df[df['breed'] == 'labs']
+
+-------------------------------
+# random numbers stuff
+np.random.seed(123)
+np.random.rand()
+np.random.ranint(0,2) # randomly between 0 or 1
+np.random.rand()
+
+
