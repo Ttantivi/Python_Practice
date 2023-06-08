@@ -50,6 +50,18 @@ Dictionaires
 world = {"afghanistan":30.55, "albania":2.77}
 Key value pairs
 
+---------
+# Create the years and durations lists
+years = range(2011, 2020)
+durations = [103, 101, 99, 100, 100, 95, 95, 96, 93, 90]
+
+# Create a dictionary with the two lists
+movie_dict = {'years':years, 'durations':durations}
+
+# Print the dictionary
+movie_dict
+---------
+
 adding new stuff: dict['key'] = value
 del(world['key'])
 
@@ -111,6 +123,18 @@ for val in np.nditer(array):
 	print val
 
 -------------------------------
+##### loading csv #####
+df = pd.read_csv('csvname.csv')
+
+df.to_csv('name.csv')
+
+##### Creating a dataframe #####
+my_dict = {'key1':value1, 'key2':value2}
+
+list of dictionaries = row by row
+dictionary of lists = column by column
+
+pd.DataFrame(stuff)
 
 # now for pandas data frame
 # iterate over rows
@@ -139,6 +163,105 @@ df[['column 1', 'column 2']]
 # subsetting rows
 df[df['height'] > 50]
 df[df['breed'] == 'labs']
+df[ (df['height'] > 50) & (df['breed'] == 'labs')]
+df[df['color'].isin(['Black', 'Brown'])]
+
+# creating new columns
+df['meters'] = df['cm']/100
+
+##### Data Aggregation #####
+df.['col'].mean(), median, mode, min, max, var, std, sum, quantile
+df.['col'].agg([pct30, pct40])
+df.['col'].cumsum()
+
+##### Counting #####
+df.drop_duplicates(subset="name") # dropping dupluicates based on columns. Get unique values in columns
+df.drop_duplicates(subset=['name', 'breed']) # dropping duplicate pairs
+df_unique['col'].value_counts()
+df_unique['col'].value_counts(sort=True)
+df_unique['col'].value_counts(normalize=True)
+
+
+##### Grouped Summary Statistics #####
+dogs.groupby('color')['weight_kg'].mean()
+dogs.groupby('[color', 'breed'])[['weight_kg', 'height_cm]].agg([min, max, sum])
+
+
+##### Group by to pivot #####
+dogs.pivot_table(values ='weight_kg', index='color', aggfunc=[np.mean, np.median]) # index is the group, values is  the aggregation.
+
+dogs.pivot_table(values ='weight_kg', index='color', columns='breed') # values are the weights, index is rows, columns are columns. 
+     fill_value=0 # zeroes instead of NaN's
+     margins=True # last row and column will contain means of columns or row, not counting the zeroes.
+
+##### Indexing #####
+dogs_ind = dogs.set_index('name') # setting a column as the index
+dogs_ind.reset_index() # removing an index
+dogs_ind.reset_index(drop=True) # gets rid of the column
+
+dogs_in = dogs.set_index(['breed', 'color'])
+
+dogs.sort_index() # ascending order, default
+dogs.sort_index(level=['color', breed'], ascending[True, False])
+
+##### Slicing #####
+sort the index before slicing
+dogs_srt.loc['Chow Chow":"Poodle"] # final value is included
+dogs_srt.loc['first index outer':'last index outer', 'inner':'last inner']
+
+dogs_srt.loc[:, 'name':'height_cm'] # slicing columns and keeping all rows.
+
+dogs.iloc[2:5, 1:4] # slicing by row and column numbers
+
+# Subset rows from Pakistan, Lahore to Russia, Moscow
+print(temperatures_srt.loc[('Pakistan', 'Lahore'):('Russia', 'Moscow')])
+
+# Filtering for column A, but only keeping column B.
+avocados[avocados['type']=='conventional'][['avg_price']]
+
+
+##### Aggregating pivot tables #####
+dogs_height_by_breed_vs_color.mean(axis = 'index') # summary statistic for each column
+dogs_height_by_breed_vs_color.mean(axis = 'columns') # summary statistic for each row
+
+
+##### Matplotlib stuff #####
+# histogram
+import matplotlib.pyplot as plt
+df['col'].hist(alpha = 0.7, bins = x) # create a histogram
+plt.show
+
+alpha = opacity
+
+# barplots
+do a group by, then take the mean
+avg_weight_by_breed.plot(kind='bar', title='asdf')
+plt.show
+
+# lineplots
+sully.plt(x='date', y='weight' kind = 'line', rot = 45)
+plt.show
+
+sully.plt(x='date', y='weight' kind = 'line', rot = 45)
+plt.show
+
+# scatter
+dog_pack.plt(x='height', y='weight', kind='scatter)
+plt.show
+
+plt.legend([])
+
+
+##### missing values #####
+df.isna() # boolean values if it's missing or not.
+df.isna().any() # if there's any missing values in a column
+df.isna().sum() # number of missing data by column
+
+df.dropna() # dropping rows
+df.fillna(0) # fills values with 0
+
+# keep only nas
+df[df.isna()]
 
 -------------------------------
 # random numbers stuff
@@ -146,5 +269,30 @@ np.random.seed(123)
 np.random.rand()
 np.random.ranint(0,2) # randomly between 0 or 1
 np.random.rand()
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Join Pandas dataframes
+
+##### inner join #####
+joined_df = df1.merge(df2, on='key', suffixes=('_suffix1', '_suffix2'))
+
+suffix if table with same name
+
+
+joined_df = df1.merge(df2, on=['key1', 'key2'], suffixes=('_suffix1', '_suffix2')) # merge on multiple columns in case of dups
+
+# left or right join
+df1.merge(df2, on='id', how='left')
+
+df1.merge(df2, how='right', left_on='id1', right_on='id2) # if id names are not the same in tables.
+
+# self join
+
+##### merging on indexs #####
+
+movies.merge(movie_to_genres, left_on='id', left_index=True, right_on='movie_id', right_index=True) # make sure index is true
+
 
 
