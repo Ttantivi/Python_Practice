@@ -124,7 +124,7 @@ for val in np.nditer(array):
 
 -------------------------------
 ##### loading csv #####
-df = pd.read_csv('csvname.csv')
+df = pd.read_csv('csvname.csv', parse_dates[''], index_col='')
 
 df.to_csv('name.csv')
 
@@ -377,3 +377,92 @@ outliers. Less than Q1 - 1.5*IQR
 np.random.seed()
 
 df.sample(n=x, replace =True)
+
+
+scipy stuff
+from scipy.stats import uniform, binom, norm, poisson, expon, 
+
+np.round(uniform.rvs(loc=0, scale=10, size=1000)) # sample from 0 to 10
+uniform.cdf(7,0,12) # sample of 7 from 0 to 12
+
+binom.rvs(# of coins, p, size = n)
+binom.pmf(value, n, p) # gets the probability of value
+binom.cdf(value, n, p) # gets the probability of 0 to value.
+
+norm.rvs(loc=mean, scale=std_dev, size=10)
+norm.cdf(value, mean, sd)
+norm.ppf(percentage, mean, sd) # what actual say value is at the percentage
+
+poisson.rvs(8, size=10) # lambda = 8, sample size 10
+poisson.pmf(5, 8) # where 8 is lambda. Get prob of 5 
+poisson.cdf(5, 8) # lambda = 8, prob less that 5.
+
+expon.cdf(value, scale) # where scale is lambda
+
+
+import seaborn as sns
+sns.lmplot(x=, y=, data=, ci = None)
+sns.scatterplot(x, y, data)
+plt.show()
+
+
+correlations:
+df['x'].corr(df['y'])
+
+transformations
+np.log(df['col'])
+sqrt()
+
+
+----------------------------------------------------------------------------------------
+Matplot stuff
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+
+fig is container that holds stuff on page
+ax is what holds the data
+
+ax.plot(x, y)
+plt.show()
+
+Can add multiple plots on one by calling ax again.
+
+
+syntax:
+ax.plot(x,y,marker='o', linestyle='--', color=r) # marker is marker at points. Can even do none.
+ax.set_xlabel('Time')
+ax.set_ylabel('Values')
+ax.set_title('Title')
+ax.tick_params('y', colors='blue')
+
+##### grid of plots #####
+fig, ax = plt.subplots(row,columns, sharey=True) # row by column of plots
+
+now ax is an array of objects
+
+ax[0,0].plot(...)
+
+##### for time series #####
+ax.plot(df.index, df['col'])
+
+where index is a datetime datatype
+
+
+##### twin axes #####
+ax2 = ax.twinx() # meaing same x axis, but separate y-axes
+ax2.plot(...)
+ax2.set_ylabel('asdf', color='')
+ax.tick_params('y', colors='red')
+
+##### Annotations #####
+adding arrows in plot
+
+ax.annotate('annotation', xy = (xposit,yposit), xytext(), arrowprops={'arrowstyle':'->', 'color':'gray'})
+# xytext is the position of the text
+# arrowprops={} dictionary of arrow properties
+
+
+
+
+
