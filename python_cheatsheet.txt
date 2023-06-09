@@ -14,7 +14,7 @@ del(list[index])
 Assigning new list, and not just reference
 x = [1, 2, 3]
 y = list(x)
-
+jeffre d'andria
 
 Methods
 this is the .stuff in a python object
@@ -186,6 +186,7 @@ df_unique['col'].value_counts(normalize=True)
 dogs.groupby('color')['weight_kg'].mean()
 dogs.groupby('[color', 'breed'])[['weight_kg', 'height_cm]].agg([min, max, sum])
 
+df.groupby('col').size() # count of each group.
 
 ##### Group by to pivot #####
 dogs.pivot_table(values ='weight_kg', index='color', aggfunc=[np.mean, np.median]) # index is the group, values is  the aggregation.
@@ -280,7 +281,6 @@ joined_df = df1.merge(df2, on='key', suffixes=('_suffix1', '_suffix2'))
 
 suffix if table with same name
 
-
 joined_df = df1.merge(df2, on=['key1', 'key2'], suffixes=('_suffix1', '_suffix2')) # merge on multiple columns in case of dups
 
 # left or right join
@@ -294,5 +294,86 @@ df1.merge(df2, how='right', left_on='id1', right_on='id2) # if id names are not 
 
 movies.merge(movie_to_genres, left_on='id', left_index=True, right_on='movie_id', right_index=True) # make sure index is true
 
+##### Filtering Join #####
+Filter table 1 based on the values of table 2
+
+Semi-joins
+ * returns the intersection, similar to an  inner join
+ * returns only columns from the left table and not the right
+ * no duplicates
+
+merged_df = df1.merge(df2, on='id')
+df1[df1['id].isin(merged_df['id'])]
+
+Anti-join
+ * opposite of semi join
+
+merged_df = df1.merge(df2, on='gid', how='left', indicator=True) # indicator _merge gives (both, left_only, right_only) or source of each row.
+id_list = merged_df.loc[merged_df['_merge'] == 'left_only', 'gid']
+df1[df1['id'].isin(id_list)]
+
+##### Concatonate Dataframes Vertically #####
+pd.concat([df1, df2, df3], ignore_index = True, sort = True) # sorting column names
+
+pd.concat([df1, df2], join='inner') # same columns
+
+# Group the invoices by the index keys and find avg of the total column
+avg_inv_by_month = inv_jul_thr_sep.groupby(level=0).agg({'total':'mean'})
 
 
+##### verifying integrity #####
+df1.merge(df2, on='id', validate='one_to_one')
+
+pd.concat([df1,df2], verify_integrity=True) # this will throw an error when there's duplicate rows.
+
+##### pd.merge_ordered() #####
+For time series data
+pd.merge_ordered(df1, df2, on='date', suffixes=['_df1', '_df2'])
+
+If there's missing data, we can do forward fill. Fill missing row with previous value.
+pd.merge_ordered(df1, df2, on='date', suffixes=['_df1', '_df2'], fill_method='ffill')
+
+left_on, right_on when diff id
+
+##### pd.merge_asof() #####
+ * match on the nearest key column and not exact matches.
+ * ! merged on columns must be sorted !! 
+
+pd.merge_asof(df1, df2, on='date_time', suffixes=('_df1', '_df2'))
+
+##### .query() #####
+df1.query('col1 > 90 & col2 < 140')
+
+df1.query('col1 == "hello" ')
+
+##### .melt() #####
+unpivots dataset
+ * column names bcome row values.
+ * adn the values those columns, then now correspond to the rows of the unpivoted columns.
+
+df.melt(id_vars=[], value_vars=['col1', 'col2'], var_name['name variable column (old col)'], value_name=['name of values of unpivoted col'])
+
+value_vars # controls which columns are melted
+
+----------------------------------------------------------------------------------------------------------------------------
+Python Stats Stuff
+.agg([np.mean,  np.median])
+
+np.std()
+np.var()
+np.quantile(col, 0.5) # where 0.5 is the quantile.
+plt.boxplot(col)
+np.linspace(start, stop, num) # num = intervals
+
+iqr = 75th - 25th quartile
+from scipy.stats import iqr
+iqr(col)
+
+col.describe # count, mean, std, min, 25 50 75 quarts, max
+
+outliers. Less than Q1 - 1.5*IQR
+             Greater than Q3 + 1.5*IQR
+
+np.random.seed()
+
+df.sample(n=x, replace =True)
