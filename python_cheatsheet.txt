@@ -528,6 +528,82 @@ fig.set_size_inches([5,5]) # size and aspect ratio
 
 ----------------------------------------------------------------------------------------
 #### Seaborn stuff ####
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.scatterplot(x=df['col'], y=df['col'])
+plt.show()
+
+sns.countplot(x=df['col'])
+
+when using dataframes,
+sns.countplot(x='col1', data=df)
+
+if color code points, legend is added automatically.
+sns.scatterplot(x, y, data=df, hue='col', hue_order=['Yes', 'No'])
+sns.countplot(x, data=df, hue='col')
+plt.show()
+
+Or to be more specific with the colors
+hue_colors = {'Yes':'black', 'No':'red'}
+sns.scatterplot(x, y, data=df, hue='col', hue_order=['Yes', 'No'], palette=hue_colors)
+plt.show()
+
+##### relational plots and subplots #####
+relplot() # create subplots in a single figure. Basically replaces scatterplot.
+
+sns.replot(x, y, data=df, kind='scatter', col='asdf', row='asdf') # plots divided among row/col groups.
+sns.replot(x, y, data=df, kind='scatter', col='asdf', col_wrap = 2) # number of columns
+sns.replot(x, y, data=df, kind='scatter', col='asdf', col_wrap = 2, col_order['col1','col2'])
+plt.show()
+
+
+##### more customization #####
+sns.relplot(x,y, data=df, kind='scatter', size='cat', hue='cat')
+sns.relplot(x,y, data=df, kind='scatter', hue='cat', style='cat')
+
+sns.relplot(x,y, data=df, kind='scatter', alpha=0.5) # opacity of points
+
+
+##### lineplots #####
+sns.relplot(x,y, data=df, kind='line', style='cat', hue='cat', marker=True) # will differ in style  and color
+if you don't want style to be different, use dashes = False
+
+95% confidence intervals are automatic. or we can do ci='sd' to get intervals
+Or ci=None
+
+##### categorical plots #####
+countplots/barplots/boxplot/Point plots
+
+sns.catplot(x, data=df, kind='count', order=['',''])
+
+sns.catplot(x, y, data=df, kind='bar')
+
+Can make category hoizontal bay doing y instead of x
+
+ci=None
+
+sns.catplot(x,y,data=df, kind='box', order=[], sym='',whis=) # empty string for sym will omit outliers.
+
+whis=2, 2*qir
+whis=[5,95] # range from 5th to 95th percentile.
+
+
+point plots are mean of quantitatiev variable
+     * different from lineplot because x-axis is categorical plot.
+
+sns.catplot(x,y,data, hue, kind=point, join=False, esimator=np.median, capsize=) 
+
+join=False removes lines
+estimator= changes from mean
+capsize= change line thingy at top.
+ci=None
+
+
+
+
+
+
 
 
 
