@@ -463,6 +463,85 @@ ax.annotate('annotation', xy = (xposit,yposit), xytext(), arrowprops={'arrowstyl
 # arrowprops={} dictionary of arrow properties
 
 
+##### plots other than line #####
+
+for a stacked barchart
+fig, ax = plt.subplots()
+ax.bar(df.index, df['col1'], label='col1')
+ax.bar(df.index, df['col2'], bottom=df['col1'], label='col2') # do this if want stacked bar chart
+ax.bar(df.index, df['col3'], bottom=df['col1'] + df['col2'] + df['col3'], label='col3')
+
+ax.set_xticklabels(df.index, rotation=90)
+ax.set_ylabel('stuff')
+ax.legend()
+plt.show()
+
+histograms, and stacked histograms
+fig, ax = plt.subplots()
+ax.hist(df['col1'], bins = ) # bins can be list of intervals
+ax.hist(df['col2'], bins = ) # can also have histtype='step' where it's just outlines
+ax.set_xlabel('')
+ax.set_ylabel('')
+ax.legend()
+plt.show()
+
+Error bars in plots
+fig, ax = plt.subplots()
+ax.bar('label', df['col'].mean(), yerr=df['col'].std())
+ax.errorbar(df['x'], df['y'], yerr=df['y'])
+
+
+Boxplots
+fig, ax = plt.subplots()
+ax.boxplot([df['col1'], df['col2']])
+ax.set_xticklabels['col1lab','col2lab']
+
+Scatterplots
+fig, ax = plt.subplots()
+ax.scatter(df1['col1'], df1['col2'], color='red', label='')
+ax.scatter(df2['col1'], df2['col2'], color='blue', label='')
+ax.legend()
+ax.set_xlabel('asdf')
+ax.set_ylabel('asdf')
+
+ax.scatter(df1['col1'], df1['col2'], c=df.index, label='') # do this for gradient effect
+
+
+##### changing plot styles #####
+# applies to all figures in section
+plt.style.use('ggplot')
+plt.style.use('fivethirtyeight')
+plt.style.use('default')
+plt.style.use('seaborn-colorblind')
+plt.style.use('tableau-colorblind10')
+plt.style.use('grayscale')
+
+##### saving visualizations #####
+fig.savefig('filename.png')
+fig.savefig('filename.jpg')
+fig.savefig('filename.jpg', quality = x)
+fig.savefig('filename.svg', quality = x) # vector file
+fig.savefig('filename.svg', dpi = x) # vector file
+
+size of figure
+fig.set_size_inches([5,5]) # size and aspect ratio
+
+----------------------------------------------------------------------------------------
+#### Seaborn stuff ####
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
