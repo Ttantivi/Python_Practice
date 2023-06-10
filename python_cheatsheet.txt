@@ -600,15 +600,41 @@ capsize= change line thingy at top.
 ci=None
 
 
+##### seaborn styles #####
+white is default style.
+sns.set_style('whitegrid') # this will add grid
+sns.set_style('ticks')
+sns.set_style('dark')
+sns.set_style('darkgrid')
 
+# diverging palettes, good for 2 things on a spectrum
+sns.set_palette() # 'RdBu', 'PRGn', 'RdBu_r', 'PRGn_r'
 
+# sequential palettes, continuous value on a scale
+sns.set_palette() # 'Greys', ''Blues'', 'PuRd', 'GnBu'
 
+# or do custom
+custom_palette = ['']
+sns.set_palette(custom_palette)
 
+# scale of vis
+sns.set_context() # paper, notebook, talk, poster
+# this will scale the text
 
+##### titles and labels #####
+# if using relplot/catplot
+g = sns.catplot(x, y, data, kind)
+g.fig.suptitle('title', y= ) # y is location of title. TITLE FOR OVERALL FIGURE
+g.fig_titles('This is {col_name}') # this will be for subplots
+g.set(xlabel = '', ylabel = '')
+plt.xticks(rotation=90)
+plt.show()
 
-
-
-
+# if using scatter, etc.
+g = sns.boxplot(x,y,data)
+g.set_title('title', y)
+g.set(xlabel = '', ylabel = '')
+plt.xticks(rotation=90)
 
 
 
