@@ -628,6 +628,20 @@ sns.set_palette(custom_palette)
 sns.set_context() # paper, notebook, talk, poster
 # this will scale the text
 
+# use sns with pandas
+can do sns.set() # applies sns default settings to pandas vis
+
+sns.despine(left=True, right=True) # this will get rid of lines around plot
+
+
+# colors from matplotlib in seaborn
+sns.set(color_codes=True)
+sns.displot(df['col'],color=g)
+
+# see colorpalette
+sns.color_palette('Purples',8) # creating a sequential palette
+sns.palplot()
+
 ##### titles and labels #####
 # if using relplot/catplot
 g = sns.catplot(x, y, data, kind)
@@ -642,6 +656,48 @@ g = sns.boxplot(x,y,data)
 g.set_title('title', y)
 g.set(xlabel = '', ylabel = '')
 plt.xticks(rotation=90)
+
+
+##### seaborn hist #####
+sns.displot(df['col'], kde=True, bins=10, rug=True, fill=True) # kde is kernel density estimate
+sns.displot(df['col'], kind='ecdf') # kde is kernel density estimate
+
+# rug is ticks
+# fill is shade under kde
+
+
+##### seaborn regression lines #####
+sns.regplot(data= df, x, y)
+
+sns.lmplot(data= df, x, y, hue=, col=)
+
+# hue will categorize by the parameter chosen through colors
+# col will put stuff in different graphs by category but in the same figure.
+
+
+##### Added granularity: Seaborn with Matplotlib #####
+fig, ax = plt.subplots()
+sns.histplot(df['col'], ax = ax) # important to have ax=ax
+ax.set(xlabel='', ylabel=, xlim=(0,max), ylim=(0, max), title='')
+
+# Create a figure and axes. Then plot the data
+fig, ax = plt.subplots()
+sns.histplot(df['fmr_1'], ax=ax)
+
+# Customize the labels and limits
+ax.set(xlabel="1 Bedroom Fair Market Rent", xlim=(100,1500), title="US Rent")
+
+# Add vertical lines for the median and mean
+ax.axvline(x=mean, color='m', label='Median', linestyle='--', linewidth=2)
+ax.axvline(x=median, color='b', label='Mean', linestyle='-', linewidth=2)
+
+# Show the legend and plot the data
+ax.legend()
+plt.show()
+
+
+##### other categorical plots #####
+
 
 
 
