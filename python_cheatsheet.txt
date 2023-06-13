@@ -1015,3 +1015,29 @@ pd.read_csv('.csv', parse_dates=['cols'])
 # when data already loaded in
 df['col'] = pd.to_datetime(df['col'])
 
+# when m/d/y are loaded into different columns
+df['col'] = pd.to_datetime(df[['m', 'd', 'y']])
+
+# extracting month day or year.
+col['date'].dt.month
+col['date'].dt.day
+col['date'].dt.year
+
+# plotting datetime
+sns.lineplot(data=df, x, y) # will plot avg y w.r.t. y with confidence interval.
+
+### correlation stuff ###
+df.corr
+sns.heatman(df.corr(), annot=True)
+sns.pairplot(data=df)
+sns.pairplot(data=df, vars=['']) 
+
+
+
+
+
+
+
+
+
+
