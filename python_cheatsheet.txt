@@ -87,6 +87,12 @@ brics.iloc[[:, [0,1]] # get all rows and columns 0 and 1
 filter for row then print column
 cars.loc[['RU, 'MOR'], ['Country', 'drives_right']]
 
+pandas true/false
+df['new_col'] = df['col'] (logical) 'asdf'
+
+pandas get row based on smallest value
+df.nsmallest(n, 'col')
+
 subsetting dataframe
 brics[brics['area'] > 8]
 brics[np.logical_and(brics['area'] > 8), brics['area' < 10]]
@@ -310,7 +316,7 @@ Semi-joins
  * no duplicates
 
 merged_df = df1.merge(df2, on='id')
-df1[df1['id].isin(merged_df['id'])]
+df1[df1['id'].isin(merged_df['id'])]
 
 Anti-join
  * opposite of semi join
@@ -667,13 +673,15 @@ sns.displot(df['col'], kind='ecdf') # kde is kernel density estimate
 
 
 ##### seaborn regression lines #####
-sns.regplot(data= df, x, y)
+sns.regplot(data= df, x, y, marker=, order=, x_bins=, fitreg=True) # order is order of polynomial
 
-sns.lmplot(data= df, x, y, hue=, col=)
+sns.lmplot(data= df, x, y, hue=, col=) # facetgrid shortcut
 
 # hue will categorize by the parameter chosen through colors
 # col will put stuff in different graphs by category but in the same figure.
+# fireg True will show the regression line
 
+sns.residplot(data=df, x, y, order=)
 
 ##### Added granularity: Seaborn with Matplotlib #####
 fig, ax = plt.subplots()
@@ -697,9 +705,74 @@ plt.show()
 
 
 ##### other categorical plots #####
+sns.stripplot(data=df, x,y, jitter=True)
+
+sns.swarmplot(data=df, x,y)
+
+sns.boxplot(data=df,x,y)
+
+sns.violinplot(data=df, x,y)
+
+sns.boxenplot(data=df, x,y)
+
+sns.barplot(data=df, x,y, hue)
+
+sns.pointplot(data=df, x,y, hue)
+
+     sns.countplot(data=df, x,y, hue)
+
+##### matrix plots #####
+sns.heatmap(pd.crosstab(df['cat1'], df['cat2']), values=df['value'], agg_func='mean')
+
+arguments:
+annot=True, actual values in individual cells
+fmt='d', results displayed as integers
+cmap='', shading
+cbar=True, color bar
+linewidths=, spacing between the cells
 
 
+Correlation matrix visualization
 
+cols =['col1', ..., 'coln']
+sns.heatmap(df[cols].corr(), cmap='YlGnBu')
+
+
+##### FacetGrid #####
+g = sns.FacetGrid(df, col='')
+g.map(sns.boxplot, 'Tuition', order=[''])
+
+
+###### PairGrid, pairplot #####
+PairGrid shows pairwise relationships between data elements
+
+g = sns.PairGrid(df, vars=['',''])
+g = g.map_diag(sns.histplot)
+g = g.map_offdiag(sns.scatterplot)
+#g = g.map(sns.scatterplot)
+
+pairplot simplifies pairgrid
+
+sns.pairplot(df, vars['',''], kind='reg', diag_kind='hist')
+sns.pairplot(df, vars['',''], kind='reg', diag_kind='hist')
+
+sns.pairplot(df, x_vars['',''], y_vars[''] kind='reg', diag_kind='hist')
+
+
+##### JointGrid #####
+it's like a scatterplot, and then a distribution on the axis on the outside of the plot
+
+g = sns.JointGrid(data=df, x, y)
+g.plot(sns.regplot, sns.histplot)
+
+2d Contour + distribution
+g = sns.JointGrid(data=df, x, y)
+g = g.plot_joint(sns.kdeplot)
+g = g.plot_marginals(sns.kdeplot, shade=True)
+
+jointplot simplified JointGrid
+
+sns.jointplot(data=df, x, y, kind='')
 
 ----------------------------------------------------------------------------------------
 Python functions
@@ -835,10 +908,110 @@ for value in get_lengths(lannister):
 
 
 
+----------------------------------------------------------------------------------------
+General EDA functions
+
+df['col'].value_counts() # get categorical counts
+df.info() # datatype, and number of nonmissing values
+df.describe() # count, mean, std, etc. of column
+df.dtypes # get datatypes
+
+df['col'].str.contains('string') # returns boolean of rows that contain string in column
+df['col'].str.contains('string1|string2') # multiple strings
+
+df['col'].astype() # change column datatype
+
+df['col1'].isin(['col1cat1', 'col1cat2']) # true false of is in
+~df['col1'].isin(['col1cat1', 'col1cat2']) # invert t/f
+
+df[df['col1'].isin(['col1cat1', 'col1cat2'])] # filter for just in list
 
 
+df.select_dtypes('datatype') # select columns wth only datatype
+df.select_dtypes('object') # preview columns
+df.['col'].nunique() # number of unique categories in column
+
+df['col'].min() # get minimum value
+df['col'].max() # get the maximum value
+sns.boxplot(data,x,y) # where you can break it down by category with y
+
+## group by aggregation
+df.groupby('col').mean() # sum, count, min, max, var, std
+
+# .agg() applies aggregating function across a DataFrame
+df.agg(['mean', 'std']) # returns a datafram of aggregated columns
+
+# specifying aggregation for columns
+df.agg({'col1':['mean','std'], 'col2':['median']})
+
+# named summary columns with specific aggregation
+df.groupby('col').agg(mean_rating=('col1', 'mean'), std_rating=('col1', 'std'))
+
+##### missing values stuff #####
+df.isna().sum() # number of missing values by column
+
+Strategies for addressing missing data
+ * drop missing values
+ * impute mean, median, mode
+ * impute by sub-group
 
 
+# dropping columns with 5% missing 
+threshold = len(df)*0.05
+cols_to_drop = df.columns[df.isna().sum() <= treshold]
+df.dropna(subset=cols_to_drop, inplace=True)
+
+# imputing a summary statistic
+cols_with_missing_values = df.columns[df.isna().sum() > 0]
+
+for col in cols_with_missing_values[:-1]
+     for df[col].fillna(df[col].mode()[0])
+
+# imputing by sub-group
+df_dict = df.groupby('group')['value'].median().to_dict()
+df['value'] = df['value'].fillna(df['group'].map(df_dict))
 
 
+# creating new categorical column based on values of another column #
+new_category = ['new_cat1', 'new_cat2']
+
+cat1_string = ['cat1s|cond1']
+cat2_string = ['cat2s|cond2']
+
+conditions = [(df['orig_col'].str.contains(cat1_string)), df['orig_col'].str.contains(cat2_string))]
+
+df['new_col'] = np.select(conditions, new_category, default='Other') # if not found, it's other
+
+
+##### data conversion #####
+pd.Series.str.replace('chars to remove', 'replacement')# removing commas
+df['dollars'] = df['dollars_with_commas'].str.replace(',', '')
+df['dollars'] = df['dollars'].astype(float)
+
+
+Groupby summary statistic, and creating new col in dataframe
+df['std_col'] = df.groupby('category')['value'].tranform(lambda x: x.std())
+
+### outliers ###
+upper outlier > 75th percentile + (1.5*iqr)
+lower outlier < 25th percentile - (1.5*iqr)
+
+# calculating IQR
+seventy_fifth = df['col'].quantile(0.75)
+twenty_fifth = df['col'].quantile(0.25)
+iqr = seventy_fifth - twenty_fifth
+
+
+# filtering for outliers
+lower = twenty_fifth - (1.5*iqr)
+upper = seventy_fifth + (1.5*iqr)
+no_outliers = df[(df['col'] > lower) & df['col'] < upper]
+
+
+##### datetime stuff #####
+# when loading data in
+pd.read_csv('.csv', parse_dates=['cols'])
+
+# when data already loaded in
+df['col'] = pd.to_datetime(df['col'])
 
