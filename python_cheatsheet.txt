@@ -1021,6 +1021,7 @@ df['col'] = pd.to_datetime(df[['m', 'd', 'y']])
 # extracting month day or year.
 col['date'].dt.month
 col['date'].dt.day
+col['date'].dt.weekday
 col['date'].dt.year
 
 # plotting datetime
@@ -1032,10 +1033,35 @@ sns.heatman(df.corr(), annot=True)
 sns.pairplot(data=df)
 sns.pairplot(data=df, vars=['']) 
 
+df['x'].corr(df['y'])
+
+##### factors or categorical #####
+use kde instead of hisograms for categorical stuff
+sns.kdeplot(data=df, x,hue='cat', cut=, cumulative=) # cut if negative values don't make sense.
 
 
+getting distribution of counts
+df['col'].value_counts(normalize=True)
+
+pd.crosstab(df['source'], df['destination'], values=df['values'], aggfunc='mean')
 
 
+### generate new features ###
+creating categories
+twenty_fifth = df['col'].quantile(0.25)
+median = df['col'].median()
+seventy_fifth = df['col'].quantile(0.75)
+maximum = df['col'].max()
+
+labels = ['low', 'mid', 'upper-mid', 'best']
+
+bins = [0, twenty_fifth, median_ seventy_fifth, maximum]
+
+df['new_cat'] = pd.cut(df['col'], labels = labels, bins = bins)
+
+
+----------------------------------------------------------------------------------------
+Categorical Data
 
 
 
